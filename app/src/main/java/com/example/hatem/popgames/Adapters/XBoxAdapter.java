@@ -5,6 +5,6 @@ package com.example.hatem.popgames.Adapters;
  */
 public class XBoxAdapter {
 
-    
+
 
 }

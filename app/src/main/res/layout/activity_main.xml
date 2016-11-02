@@ -23,8 +23,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:background="?attr/colorPrimary"
+        android:background="#ffffff"
         android:elevation="6dp"
+        app:tabTextColor="#000000"
+        app:tabSelectedTextColor="#000000"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 

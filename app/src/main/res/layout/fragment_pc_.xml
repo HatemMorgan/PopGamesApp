@@ -4,10 +4,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.hatem.popgames.Fragments.PC_Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <GridView
+        android:id="@+id/gridview_PC_Games"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:columnWidth="160dp"
+        android:verticalSpacing="6dp"
+        android:horizontalSpacing="12dp"
+        android:stretchMode="columnWidth"
+        android:numColumns="2"
+        android:choiceMode="singleChoice"
+        android:layout_marginBottom="5dp"
+        />
+
 
 </FrameLayout>

@@ -1,10 +1,12 @@
 package com.example.hatem.popgames.Activities;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.hatem.popgames.Adapters.PagerAdapter;
 import com.example.hatem.popgames.R;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         // initializing viewPager and pagerAdapter
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(pagerAdapter);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -52,5 +54,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    // add option menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true ;
+    }
+
+    // add actions when menu option items selected
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings){
+            System.out.print("Settings");
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

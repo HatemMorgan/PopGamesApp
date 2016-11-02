@@ -9,6 +9,7 @@ import com.example.hatem.popgames.Fragments.Playstation3_Fragment;
 import com.example.hatem.popgames.Fragments.Playstation4_Fragment;
 import com.example.hatem.popgames.Fragments.XBox_Fragment;
 
+
 /**
  * Created by hatem on 11/2/16.
  */
@@ -26,7 +27,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position){
             case 1 :
-                PC_Fragment pc_fragment = new PC_Fragment();
+            PC_Fragment  pc_fragment = new PC_Fragment();
                 return pc_fragment ;
             case 2 :
                 Playstation3_Fragment playstation3_fragment = new Playstation3_Fragment() ;
@@ -38,7 +39,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 XBox_Fragment xBox_fragment = new XBox_Fragment() ;
                 return  xBox_fragment ;
             default:
-                return  null ;
+                return new PC_Fragment();
 
         }
 

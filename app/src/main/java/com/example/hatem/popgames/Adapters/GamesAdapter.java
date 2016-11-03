@@ -17,12 +17,13 @@ import java.util.ArrayList;
 /**
  * Created by hatem on 11/2/16.
  */
-public class PS3GamesAdapter  extends BaseAdapter{
+public class GamesAdapter extends BaseAdapter {
+
     private ArrayList<Games> gamesList ;
     private Context context ;
     private LayoutInflater layoutInflater ;
 
-    public PS3GamesAdapter(Context context , ArrayList<Games> gamesList){
+    public GamesAdapter(Context context , ArrayList<Games> gamesList){
         this.context = context ;
         this.gamesList = gamesList ;
         this.layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
@@ -74,5 +75,6 @@ public class PS3GamesAdapter  extends BaseAdapter{
         return convertView ;
 
     }
+
 
 }

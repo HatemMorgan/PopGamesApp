@@ -10,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.hatem.popgames.Adapters.XBOXGamesAdapter;
+import com.example.hatem.popgames.Adapters.GamesAdapter;
 import com.example.hatem.popgames.ORM.Games;
 import com.example.hatem.popgames.ORM.GamesCollection;
 import com.example.hatem.popgames.R;
@@ -34,7 +33,7 @@ public class XBox_Fragment extends Fragment {
     private ArrayList<Games> gamesList;
     private Context context;
     private GridView pcGamesGridView;
-    private TextView textView_gameName;
+
 
 
 
@@ -81,7 +80,6 @@ public class XBox_Fragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         updateGames();
     }
 
@@ -119,11 +117,11 @@ public class XBox_Fragment extends Fragment {
                         GamesCollection gamesCollection = gson.fromJson(response, GamesCollection.class);
                         gamesList = gamesCollection.getGamesResults();
 
-
-
-
-                        XBOXGamesAdapter xboxGamesAdapter = new XBOXGamesAdapter(context, gamesList);
+                        GamesAdapter xboxGamesAdapter = new GamesAdapter(context, gamesList);
                         pcGamesGridView.setAdapter(xboxGamesAdapter);
+
+//                        RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).getmRequestQueue().cancelAll("TAG");
+
                     }
                 },
 
@@ -135,7 +133,7 @@ public class XBox_Fragment extends Fragment {
                 }
         );
 
-        RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).getmRequestQueue().cancelAll("TAG");
+
         RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).addToRequestQueue(getXBOXGamesRequest);
 
     }

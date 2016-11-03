@@ -10,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.hatem.popgames.Adapters.PCGamesAdapter;
+import com.example.hatem.popgames.Adapters.GamesAdapter;
 import com.example.hatem.popgames.ORM.Games;
 import com.example.hatem.popgames.ORM.GamesCollection;
 import com.example.hatem.popgames.R;
@@ -34,7 +33,7 @@ public class PC_Fragment extends Fragment {
     private ArrayList<Games> gamesList ;
     private Context context ;
     private GridView pcGamesGridView ;
-    private TextView textView_gameName;
+
 
     public PC_Fragment() {
         // Required empty public constructor
@@ -52,8 +51,6 @@ public class PC_Fragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_pc_, container, false);
 
         pcGamesGridView = (GridView) rootView.findViewById(R.id.gridview_PC_Games);
-        textView_gameName = (TextView) rootView.findViewById(R.id.txt_view_icon_name);
-
         pcGamesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -81,7 +78,6 @@ public class PC_Fragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         updateGames();
     }
 
@@ -91,7 +87,7 @@ public class PC_Fragment extends Fragment {
 //        outState.putParcelableArrayList("gamesList",gamesList);
     }
 
-    public void updateGames() {
+    public  void updateGames() {
         final String APPID_PARAM = "api_key";
         final String FORMAT_PARAM = "format";
         final String FIELD_LIST_PARAM = "field_list";
@@ -118,9 +114,10 @@ public class PC_Fragment extends Fragment {
                         GamesCollection gamesCollection = gson.fromJson(response, GamesCollection.class);
                         gamesList = gamesCollection.getGamesResults();
 
+                        GamesAdapter GamesAdapter = new GamesAdapter(context, gamesList);
+                        pcGamesGridView.setAdapter(GamesAdapter);
 
-                        PCGamesAdapter PCGamesAdapter = new PCGamesAdapter(context, gamesList);
-                        pcGamesGridView.setAdapter(PCGamesAdapter);
+//                        RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).getmRequestQueue().cancelAll("TAG");
                     }
                 },
 
@@ -132,7 +129,7 @@ public class PC_Fragment extends Fragment {
                 }
         );
 
-        RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).getmRequestQueue().cancelAll("TAG");
+
         RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).addToRequestQueue(getPCGamesRequest);
     }
 

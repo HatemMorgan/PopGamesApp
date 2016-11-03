@@ -8,10 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.hatem.popgames.Adapters.PagerAdapter;
+import com.example.hatem.popgames.Adapters.ViewPagerAdapter;
+import com.example.hatem.popgames.Fragments.PC_Fragment;
+import com.example.hatem.popgames.Fragments.Playstation3_Fragment;
+import com.example.hatem.popgames.Fragments.Playstation4_Fragment;
+import com.example.hatem.popgames.Fragments.XBox_Fragment;
 import com.example.hatem.popgames.R;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,41 +27,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // initializing  toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Pop Games");
         setSupportActionBar(toolbar);
-
-        // initializing tabLayout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.PC_tab_name));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.Playstation3_tab_name));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.Playstation4_tab_name));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.XBox_tab_name));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initializing viewPager and pagerAdapter
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(pagerAdapter);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(viewPager);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
+        // initializing tabLayout
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+    }
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new PC_Fragment(), "PC");
+        adapter.addFragment(new Playstation3_Fragment(), "PS3");
+        adapter.addFragment(new Playstation4_Fragment(), "PS4");
+        adapter.addFragment(new XBox_Fragment(), "XBOX");
+        viewPager.setAdapter(adapter);
     }
 
     // add option menu

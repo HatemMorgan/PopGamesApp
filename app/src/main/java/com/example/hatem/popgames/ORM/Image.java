@@ -27,7 +27,7 @@ public class Image {
     private String superUrl;
     @SerializedName("thumb_url")
     @Expose
-    private String thumbUrl;
+    private String thumb_url;
     @SerializedName("tiny_url")
     @Expose
     private String tinyUrl;
@@ -128,7 +128,7 @@ public class Image {
      *     The thumbUrl
      */
     public String getThumbUrl() {
-        return thumbUrl;
+        return thumb_url;
     }
 
     /**
@@ -137,7 +137,7 @@ public class Image {
      *     The thumb_url
      */
     public void setThumbUrl(String thumbUrl) {
-        this.thumbUrl = thumbUrl;
+        this.thumb_url = thumbUrl;
     }
 
     /**

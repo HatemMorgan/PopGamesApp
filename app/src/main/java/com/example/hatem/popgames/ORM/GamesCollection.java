@@ -9,7 +9,6 @@ package com.example.hatem.popgames.ORM;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class GamesCollection {
 
@@ -33,7 +32,7 @@ public class GamesCollection {
     private int statusCode;
     @SerializedName("results")
     @Expose
-    private List<ResultGames> results = new ArrayList<ResultGames>();
+    private ArrayList<Games> results = new ArrayList<Games>();
     @SerializedName("version")
     @Expose
     private String version;
@@ -151,7 +150,7 @@ public class GamesCollection {
      * @return
      *     The results
      */
-    public List<ResultGames> getGamesResults() {
+    public ArrayList<Games> getGamesResults() {
         return results;
     }
 
@@ -160,9 +159,9 @@ public class GamesCollection {
      * @param results
      *     The results
      */
-    public void setGamesResults(List<ResultGames> results) {
-        this.results = results;
-    }
+//    public void setGamesResults(List<Games> results) {
+//        this.results = results;
+//    }
 
     /**
      *

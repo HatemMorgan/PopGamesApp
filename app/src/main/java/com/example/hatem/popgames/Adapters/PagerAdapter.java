@@ -26,6 +26,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
 
         switch (position){
+            case 0:
+                PC_Fragment  pc_fragment1 = new PC_Fragment();
+                return  pc_fragment1;
             case 1 :
             PC_Fragment  pc_fragment = new PC_Fragment();
                 return pc_fragment ;
@@ -38,8 +41,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 4 :
                 XBox_Fragment xBox_fragment = new XBox_Fragment() ;
                 return  xBox_fragment ;
-            default:
-                return new PC_Fragment();
+
+            default: return  null ;
 
         }
 

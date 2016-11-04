@@ -2,6 +2,8 @@
     <string name="app_name">Pop Games</string>
 
     <!-- TODO: Remove or change this placeholder text -->
+    
+    <!--Main Activity-->
     <string name="PC_tab_name">PC</string>
     <string name="Playstation3_tab_name">PS3</string>
     <string name="Playstation4_tab_name">PS4</string>
@@ -9,8 +11,29 @@
     <string name="api_key">0df72ab53c1e4b677d9e89aaccc0aeddb5ee071a</string>
     <string name="response_format">json</string>
     <string name="response_limit">10</string>
+
+    <string name="response_sort_number_of_user_reviews">number_of_user_reviews:desc</string>
+    <string name="response_sort_original_game_rating">original_game_rating:desc</string>
+    <string name="response_sort_original_release_date">original_release_date:desc</string>
+
+
     <string name="response_filter_PC">platforms:94</string>
     <string name="response_filter_PS3">platforms:35</string>
     <string name="response_filter_PS4">platforms:146</string>
     <string name="response_filter_XBOX">platforms:32</string>
+    
+    <!-- Settings -->
+    <string name="settings_activity_name">Settings</string>
+    <string name="pref_sort_list_key">Sort</string>
+    <string name="sort_games_setting_title">Sort Games</string>
+
+    <string name="sort_by_release_date">Release Date</string>
+    <string name="sort_by_top_rated">Top Rated</string>
+    <string name="sort_by_top_user_reviews">Top User Reviews</string>
+
+    <string name="sort_by_release_date_value">original_release_date</string>
+    <string name="sort_by_top_rated_value">original_game_rating</string>
+    <string name="sort_by_top_user_reviews_value">number_of_user_reviews</string>
+    
+    
 </resources>

@@ -2,8 +2,11 @@ package com.example.hatem.popgames.Fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,18 +37,25 @@ public class Playstation3_Fragment extends Fragment {
     private ArrayList<Games> gamesList;
     private Context context;
     private GridView pcGamesGridView;
-
+    private SharedPreferences sharedPreferences ;
 
     public Playstation3_Fragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity();
+
+        // intialize shared preference
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        context = getActivity();
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_playstation3_, container, false);
@@ -94,7 +104,11 @@ public class Playstation3_Fragment extends Fragment {
         final String FIELD_LIST_PARAM = "field_list";
         final String LIMIT_PARAM = "limit";
         final String FILTER_PARAM = "filter";
+        final String SORT_PARAM =  "sort";
         String getGamesUrl = "http://www.giantbomb.com/api/games/";
+
+        String  sortCriteria = sharedPreferences.getString(getString(R.string.pref_sort_list_key), getString(R.string.sort_by_release_date));
+
 
         Uri buildUri = Uri.parse(getGamesUrl)
                 .buildUpon()
@@ -103,6 +117,7 @@ public class Playstation3_Fragment extends Fragment {
                 .appendQueryParameter(FIELD_LIST_PARAM, "id,name,image")
                 .appendQueryParameter(LIMIT_PARAM, getString(R.string.response_limit))
                 .appendQueryParameter(FILTER_PARAM, getString(R.string.response_filter_PS3))
+                .appendQueryParameter(SORT_PARAM,sortCriteria+":desc")
                 .build();
 
         StringRequest getPS3GamesRequest = new StringRequest(Request.Method.GET, buildUri.toString(),

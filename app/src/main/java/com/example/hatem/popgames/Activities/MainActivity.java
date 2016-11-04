@@ -1,5 +1,6 @@
 package com.example.hatem.popgames.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Pop Games");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // initializing viewPager and pagerAdapter
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -65,7 +65,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_settings){
-            System.out.print("Settings");
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+            finish();
+
         }
         return super.onOptionsItemSelected(item);
     }

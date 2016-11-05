@@ -1,12 +1,9 @@
 
 package com.example.hatem.popgames.ORM;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Generated("org.jsonschema2pojo")
 public class Video {
 
     @SerializedName("api_detail_url")
@@ -94,9 +91,5 @@ public class Video {
         this.siteDetailUrl = siteDetailUrl;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
 
 }

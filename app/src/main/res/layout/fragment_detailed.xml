@@ -170,9 +170,10 @@
 
         <Gallery
             android:id="@+id/horizontal_list_view_similar_games"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content" />
+
 
         <View
             android:layout_width="fill_parent"

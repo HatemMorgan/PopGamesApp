@@ -2,6 +2,7 @@ package com.example.hatem.popgames.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.hatem.popgames.Activities.DetailedActivity;
 import com.example.hatem.popgames.Adapters.GamesAdapter;
 import com.example.hatem.popgames.ORM.Games;
 import com.example.hatem.popgames.ORM.GamesCollection;
@@ -70,10 +71,11 @@ public class Playstation4_Fragment extends Fragment {
                 if(gamesList != null){
 
                     int gameID = gamesList.get(position).getId();
-                    bundle.putInt("id",gameID);
-
-
-                    new Toast(view.getContext()).makeText(view.getContext(),gameID+"",Toast.LENGTH_LONG).show();
+                    bundle.putInt("game_id",gameID);
+                    Intent intent = new Intent(getActivity(), DetailedActivity.class);
+                    intent.putExtras(bundle);
+                    getActivity().startActivity(intent);
+                    getActivity().finish();
 
                 }
 

@@ -1,15 +1,13 @@
 
 package com.example.hatem.popgames.ORM;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang.builder.ToStringBuilder;
 
-@Generated("org.jsonschema2pojo")
-public class Results {
+import java.util.ArrayList;
+import java.util.List;
+
+public class SingleGame {
 
     @SerializedName("deck")
     @Expose
@@ -28,7 +26,7 @@ public class Results {
     private String originalReleaseDate;
     @SerializedName("images")
     @Expose
-    private List<Image_> images = new ArrayList<Image_>();
+    private List<Image> images = new ArrayList<Image>();
     @SerializedName("videos")
     @Expose
     private List<Video> videos = new ArrayList<Video>();
@@ -134,7 +132,7 @@ public class Results {
      * @return
      *     The images
      */
-    public List<Image_> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
@@ -143,7 +141,7 @@ public class Results {
      * @param images
      *     The images
      */
-    public void setImages(List<Image_> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 
@@ -201,9 +199,6 @@ public class Results {
         this.similarGames = similarGames;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
+
 
 }

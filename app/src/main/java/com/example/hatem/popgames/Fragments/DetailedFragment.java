@@ -1,7 +1,9 @@
 package com.example.hatem.popgames.Fragments;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,18 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.hatem.popgames.Activities.DetailedActivity;
 import com.example.hatem.popgames.Adapters.SimilarGamesAdapter;
 import com.example.hatem.popgames.Adapters.VideosAdapter;
 import com.example.hatem.popgames.ORM.DetailedGame;
@@ -54,6 +57,7 @@ public class DetailedFragment extends Fragment {
     private Button btn_Reviews;
     private Button btn_Gallary;
     private ImageView gameImage;
+    private TextView textView_noVideos;
 
     private ArrayList<SingleGame> similarGamesList;
     private ArrayList<String> youtubeVideoList;
@@ -89,21 +93,68 @@ public class DetailedFragment extends Fragment {
         btn_Gallary = (Button) rootView.findViewById(R.id.btn_gallary);
         btn_Reviews = (Button) rootView.findViewById(R.id.btn_Reviews);
         gameImage = (ImageView) rootView.findViewById(R.id.imageView_poaster);
+        textView_noVideos = (TextView) rootView.findViewById(R.id.textView_NoVideos);
+
+        // set an onItemClickListner to the horizontal list that contains the similar games
+        // that fire an implicit intent that navigates the user to the detailed activity of the clicked game
+        horizonatalListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ImageView imageView_simalrGameImage = (ImageView) view.findViewById(R.id.imageView_icon);
+                String gameID = imageView_simalrGameImage.getContentDescription().toString();
+
+                // creating a bundle and add to it the gameID
+                Bundle bundle = new Bundle();
+                bundle.putInt("game_id",Integer.parseInt(gameID));
+                // creating an implicit intent and add to it the created bundle
+                Intent intent = new Intent(getActivity(), DetailedActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+        // add an onItemClickListener to listView containing the videos
+        // that will fire an explicit intent to play the video
+        listView_videos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ImageView imageView_play = (ImageView) view.findViewById(R.id.imageView_play);
+                // get the video id from the content description of the list item image as I stored when inflating results from videosData arraylist
+                // into videos adapter
+                String video_key =  imageView_play.getContentDescription().toString();
+
+                // crate two intents one for web if the device running the application does not have an application that can run the video
+                // the other one is used to play the youtube in any of the available apps on the user's device that could play the video
+                Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video_key));
+                Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://www.youtube.com/watch?v=" + video_key));
+                try {
+                    // if there are no apps in the user's device that can play the youtube video an ActivityNotFoundException will be thrown
+                    // if ActivityNotFoundException was thrown , I will catch it and sent the web intent that plays the video in any on of the browsers
+                    // available on the device
+                    startActivity(appIntent);
+                } catch (ActivityNotFoundException ex) {
+                    startActivity(webIntent);
+                }
+            }
+        });
 
         return rootView ;
 
 
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         Bundle bundle = getActivity().getIntent().getExtras();
         int game_id = bundle.getInt("game_id");
-        new Toast(context).makeText(context,game_id+"",Toast.LENGTH_LONG).show();
+//        new Toast(context).makeText(context,game_id+"",Toast.LENGTH_LONG).show();
         getData(game_id+"");
 
+        // todo : savaInstanceState here
 
 
     }
@@ -128,7 +179,7 @@ public class DetailedFragment extends Fragment {
                 .buildUpon()
                 .appendQueryParameter(APPID_PARAM, getString(R.string.api_key))
                 .appendQueryParameter(FORMAT_PARAM, getString(R.string.response_format))
-                .appendQueryParameter(FIELD_LIST_PARAM, "id,name,deck,original_release_date,image,images,reviews,,similar_games,videos")
+                .appendQueryParameter(FIELD_LIST_PARAM, "id,name,deck,original_release_date,image,progress_image,reviews,,similar_games,videos")
                 .build();
 
         StringRequest getPCGamesRequest = new StringRequest(Request.Method.GET, buildUri.toString(),
@@ -186,11 +237,17 @@ public class DetailedFragment extends Fragment {
         count = new int[1];
         count[0]= 0;
         List<Video> videoList = game.getVideos();
+
+        // check if videos list of the game is empty to tell the user that their is no videos for this game
+        if (videoList.size()== 0 ){
+            textView_noVideos.setText("Sorry , No Videos available");
+        }
+
         getYouTubeVideos(videoList,count);
 
 
     }
-
+    //getSimilarGames at most 10 games from the similar games list of a specified game
     private void getSimilarGames(final List<SimilarGame> gameList, final int count[] ) {
 
         if (count[0] == gameList.size() || count[0] == 10) {
@@ -210,7 +267,7 @@ public class DetailedFragment extends Fragment {
                     .buildUpon()
                     .appendQueryParameter(APPID_PARAM, getString(R.string.api_key))
                     .appendQueryParameter(FORMAT_PARAM, getString(R.string.response_format))
-                    .appendQueryParameter(FIELD_LIST_PARAM, "id,name,image")
+                    .appendQueryParameter(FIELD_LIST_PARAM, "id,image")
                     .build();
 
             StringRequest getSimilarGamesRequest = new StringRequest(Request.Method.GET, buildUri.toString(),
@@ -245,9 +302,9 @@ public class DetailedFragment extends Fragment {
         }
 
     }
-
+    // load at most 6 videos from the videos list of the specified game
     private void getYouTubeVideos(final List<Video> videoList , final int [] count){
-        if(count[0] == videoList.size()){
+        if(count[0] == videoList.size() || count[0]==6){
             VideosAdapter videosAdapter = new VideosAdapter(context,getYoutubeVideoList());
             listView_videos.setAdapter(videosAdapter);
               setListViewHeightBasedOnChildren(listView_videos);
@@ -311,7 +368,7 @@ public class DetailedFragment extends Fragment {
         }
 
     }
-
+// used to set the hieght of the list view based on the children when adding a listview to scroll view
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null)

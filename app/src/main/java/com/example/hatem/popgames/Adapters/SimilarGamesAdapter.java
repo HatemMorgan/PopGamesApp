@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.hatem.popgames.ORM.SingleGame;
 import com.example.hatem.popgames.R;
@@ -31,7 +30,7 @@ public class SimilarGamesAdapter extends BaseAdapter {
 
     static class ViewHolder {
         private ImageView gameImage;
-        private TextView gameName;
+//        private TextView gameName;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class SimilarGamesAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.similar_games_gallary_item,null);
             viewHolder = new ViewHolder() ;
             viewHolder.gameImage = (ImageView) convertView.findViewById(R.id.imageView_icon);
-            viewHolder.gameName = (TextView) convertView.findViewById(R.id.txt_view_icon_name);
+//            viewHolder.gameName = (TextView) convertView.findViewById(R.id.txt_view_icon_name);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -65,12 +64,13 @@ public class SimilarGamesAdapter extends BaseAdapter {
 
         SingleGame game = getItem(position);
 
-        viewHolder.gameName.setText(game.getName());
+//        viewHolder.gameName.setText(game.getName());
 
+        // make this check because some games from the list has no progress_image so I have to ignore them
         if(game.getImage() != null) {
             String imageURl = game.getImage().getSmallUrl();
-
-            Picasso.with(context).load(imageURl).into(viewHolder.gameImage);
+            Picasso.with(context).load(imageURl).placeholder(R.drawable.progress_animation).into(viewHolder.gameImage);
+            viewHolder.gameImage.setContentDescription(game.getId()+"");
         }
         return convertView ;
 

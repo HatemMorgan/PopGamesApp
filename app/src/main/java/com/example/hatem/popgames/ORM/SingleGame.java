@@ -24,7 +24,7 @@ public class SingleGame {
     @SerializedName("original_release_date")
     @Expose
     private String originalReleaseDate;
-    @SerializedName("images")
+    @SerializedName("progress_image")
     @Expose
     private List<Image> images = new ArrayList<Image>();
     @SerializedName("videos")
@@ -130,7 +130,7 @@ public class SingleGame {
     /**
      * 
      * @return
-     *     The images
+     *     The progress_image
      */
     public List<Image> getImages() {
         return images;
@@ -139,7 +139,7 @@ public class SingleGame {
     /**
      * 
      * @param images
-     *     The images
+     *     The progress_image
      */
     public void setImages(List<Image> images) {
         this.images = images;

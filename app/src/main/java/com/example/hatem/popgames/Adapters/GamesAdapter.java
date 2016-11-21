@@ -70,7 +70,7 @@ public class GamesAdapter extends BaseAdapter {
         if(game.getImage() != null) {
             String imageURl = game.getImage().getScreenUrl();
 
-            Picasso.with(context).load(imageURl).into(viewHolder.gameImage);
+            Picasso.with(context).load(imageURl).placeholder(R.drawable.progress_animation).into(viewHolder.gameImage);
         }
         return convertView ;
 

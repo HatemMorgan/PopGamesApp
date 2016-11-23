@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Gallery;
@@ -28,6 +29,7 @@ public class GallaryActivity extends AppCompatActivity {
     private  Gallery gallaryView ;
     private ImageView imageViewGallary ;
     private Context context ;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class GallaryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallary);
 
         context = this;
-
+        initToolBar();
         gallaryView = (Gallery) findViewById(R.id.gallary);
         imageViewGallary = (ImageView) findViewById(R.id.imageView_gallary);
 
@@ -49,7 +51,7 @@ public class GallaryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ImageView selectedImage = (ImageView) view;
                 String imageUrl = selectedImage.getContentDescription().toString();
-                Picasso.with(context).load(imageUrl).resize(215,315).placeholder(R.drawable.progress_animation).into(imageViewGallary);
+                Picasso.with(context).load(imageUrl).resize(250,350).placeholder(R.drawable.progress_animation).into(imageViewGallary);
             }
         });
 
@@ -105,4 +107,23 @@ public class GallaryActivity extends AppCompatActivity {
 
         RequestQueueSingelton.getmInstance(this).addToRequestQueue(getImagesRequest);
     }
+
+    private void initToolBar (){
+        toolbar = (Toolbar) findViewById(R.id.gallaryTtoolbar);
+        toolbar.setTitle("Galary");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+    }
+
 }

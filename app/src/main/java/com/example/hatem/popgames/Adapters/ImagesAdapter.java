@@ -55,7 +55,7 @@ public class ImagesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView = new ImageView(context);
         Picasso.with(context).load(imagesListThumbURl.get(position)).placeholder(R.drawable.progress_animation).into(imageView);
-        imageView.setLayoutParams(new Gallery.LayoutParams(300, 300));
+        imageView.setLayoutParams(new Gallery.LayoutParams(400, 400));
         imageView.setBackgroundResource(itemBackground);
         imageView.setContentDescription(imagesListMediumURl.get(position));
         return imageView;

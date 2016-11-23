@@ -6,75 +6,75 @@ import com.google.gson.annotations.SerializedName;
 
 public class Review {
 
-    @SerializedName("api_detail_url")
+    @SerializedName("deck")
     @Expose
-    private String apiDetailUrl;
-    @SerializedName("id")
+    private String deck;
+    @SerializedName("reviewer")
     @Expose
-    private Integer id;
-    @SerializedName("name")
+    private String reviewer;
+    @SerializedName("score")
     @Expose
-    private String name;
+    private long score;
     @SerializedName("site_detail_url")
     @Expose
     private String siteDetailUrl;
 
     /**
-     * 
+     *
      * @return
-     *     The apiDetailUrl
+     *     The deck
      */
-    public String getApiDetailUrl() {
-        return apiDetailUrl;
+    public String getDeck() {
+        return deck;
     }
 
     /**
-     * 
-     * @param apiDetailUrl
-     *     The api_detail_url
+     *
+     * @param deck
+     *     The deck
      */
-    public void setApiDetailUrl(String apiDetailUrl) {
-        this.apiDetailUrl = apiDetailUrl;
+    public void setDeck(String deck) {
+        this.deck = deck;
     }
 
     /**
-     * 
+     *
      * @return
-     *     The id
+     *     The reviewer
      */
-    public Integer getId() {
-        return id;
+    public String getReviewer() {
+        return reviewer;
     }
 
     /**
-     * 
-     * @param id
-     *     The id
+     *
+     * @param reviewer
+     *     The reviewer
      */
-    public void setId(Integer id) {
-        this.id = id;
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
 
     /**
-     * 
+     *
      * @return
-     *     The name
+     *     The score
      */
-    public String getName() {
-        return name;
+    public long getScore() {
+        return score;
     }
 
     /**
-     * 
-     * @param name
-     *     The name
+     *
+     * @param score
+     *     The score
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setScore(long score) {
+        this.score = score;
     }
 
     /**
-     * 
+     *
      * @return
      *     The siteDetailUrl
      */
@@ -83,13 +83,12 @@ public class Review {
     }
 
     /**
-     * 
+     *
      * @param siteDetailUrl
      *     The site_detail_url
      */
     public void setSiteDetailUrl(String siteDetailUrl) {
         this.siteDetailUrl = siteDetailUrl;
     }
-
 
 }

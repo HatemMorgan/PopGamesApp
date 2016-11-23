@@ -1,6 +1,8 @@
 package com.example.hatem.popgames.Fragments;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.hatem.popgames.Adapters.ReviewsAdapter;
 import com.example.hatem.popgames.ORM.Review;
 import com.example.hatem.popgames.ORM.ReviewsAPIObject;
 import com.example.hatem.popgames.R;
@@ -35,6 +39,7 @@ public class ReviewsFragment extends Fragment {
     TextView textView_gameReleaseYear;
     TextView textView_noReviews;
     ListView listView_review_list;
+    Context context;
 
     public ReviewsFragment() {
         // Required empty public constructor
@@ -66,17 +71,32 @@ public class ReviewsFragment extends Fragment {
         textView_gameReleaseYear.setText(gameReleaseYear);
 
 
+        listView_review_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    ImageView image = (ImageView) view.findViewById(R.id.imageView_Review_AuthorImage);
+                    String reviewSiteURL = image.getContentDescription().toString();
+                    // create explicit intent to allow navigating the user to site of the full review throgh the browser
+                Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(reviewSiteURL));
+
+                startActivity(webIntent);
+            }
+        });
+
         return rootView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
+        context = getContext();
+        Bundle bundle = getActivity().getIntent().getExtras();
+        int gameID = bundle.getInt("gameID");
+        getReviewFromApi(gameID);
     }
 
-    private void getReviewFromApi (String gameID){
+    private void getReviewFromApi (int gameID){
         final String APPID_PARAM = "api_key";
         final String FORMAT_PARAM = "format";
         final String FILTER_PARAM = "filter";
@@ -99,6 +119,8 @@ public class ReviewsFragment extends Fragment {
                 Gson gson  = new Gson();
                 ReviewsAPIObject  reviewsAPiResponseObject = gson.fromJson(response,ReviewsAPIObject.class);
                 List<Review> reviewsList = reviewsAPiResponseObject.getResults();
+                ReviewsAdapter reviewsAdapter = new ReviewsAdapter(context,reviewsList);
+                listView_review_list.setAdapter(reviewsAdapter);
 
             }
         }, new Response.ErrorListener() {

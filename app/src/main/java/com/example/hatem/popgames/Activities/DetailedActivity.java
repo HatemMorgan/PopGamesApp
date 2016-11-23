@@ -24,7 +24,7 @@ public class DetailedActivity extends AppCompatActivity {
 
         detailed_fragment = new DetailedFragment() ;
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.DetialedMovies_container,detailed_fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.DetialedGame_container,detailed_fragment).commit();
 
 
 

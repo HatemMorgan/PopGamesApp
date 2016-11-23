@@ -24,6 +24,9 @@
 
     <!-- Settings -->
     <string name="settings_activity_name">Settings</string>
+
+    <!--Games-->
+
     <string name="pref_sort_list_key">Sort</string>
     <string name="sort_games_setting_title">Sort Games</string>
 
@@ -34,6 +37,18 @@
     <string name="sort_by_release_date_value">date_added</string>
     <string name="sort_by_top_rated_value">original_game_rating</string>
     <string name="sort_by_top_user_reviews_value">number_of_user_reviews</string>
+
+    <!--Reviews-->
+    <string name="pref_sortReviews_list_key">SortReviews</string>
+    <string name="sort_reviews_setting_title">Sort Reviews</string>
+
+    <string name="sort_by_date">Date</string>
+    <string name="sort_by_rate">Rate</string>
+
+    <string name="sort_by_date_value">date_last_updated</string>
+    <string name="sort_by_rate_value">score</string>
+
+
 
     // Detailed Activity
 

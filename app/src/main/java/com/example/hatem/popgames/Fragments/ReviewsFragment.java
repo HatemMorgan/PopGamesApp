@@ -3,8 +3,10 @@ package com.example.hatem.popgames.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -41,11 +43,19 @@ public class ReviewsFragment extends Fragment {
     TextView textView_noReviews;
     ListView listView_review_list;
     Context context;
+    private SharedPreferences sharedPreferences ;
 
     public ReviewsFragment() {
         // Required empty public constructor
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // intialize shared preference
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,16 +111,22 @@ public class ReviewsFragment extends Fragment {
         final String APPID_PARAM = "api_key";
         final String FORMAT_PARAM = "format";
         final String FILTER_PARAM = "filter";
-//        final String SORT_PARAM = "sort";
+        final String LIMIT_PARAM = "limit";
+        final String SORT_PARAM = "sort";
         final String FIELD_LIST_PARAM = "field_list";
         String getGamesUrl = "http://www.giantbomb.com/api/user_reviews";
+
+        String  sortCriteria = sharedPreferences.getString(getString(R.string.pref_sortReviews_list_key), getString(R.string.sort_by_date));
+
 
         Uri buildUri = Uri.parse(getGamesUrl)
                         .buildUpon()
                         .appendQueryParameter(APPID_PARAM, getString(R.string.api_key))
                         .appendQueryParameter(FORMAT_PARAM, getString(R.string.response_format))
                         .appendQueryParameter(FIELD_LIST_PARAM, "reviewer,deck,score,site_detail_url")
+                        .appendQueryParameter(LIMIT_PARAM,"70")
                         .appendQueryParameter(FILTER_PARAM,"game:"+gameID)
+                        .appendQueryParameter(SORT_PARAM,sortCriteria+":desc")
                         .build();
 
         StringRequest getReviewsRequest = new StringRequest(Request.Method.GET, buildUri.toString(), new Response.Listener<String>() {

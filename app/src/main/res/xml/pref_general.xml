@@ -11,4 +11,14 @@
 
     </ListPreference>
 
+    <ListPreference
+
+        android:key="@string/pref_sortReviews_list_key"
+        android:defaultValue="@string/sort_by_date"
+        android:entries="@array/pref_sortReviews_list_options"
+        android:entryValues="@array/pref_sortRevies_list_values"
+        android:title="@string/sort_reviews_setting_title">
+
+    </ListPreference>
+
 </PreferenceScreen>

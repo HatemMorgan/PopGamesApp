@@ -25,6 +25,7 @@ public class ReviewsAdapter extends BaseAdapter {
         private TextView reviewerName;
         private  TextView reviewContent;
         private ImageView reviewerImage;
+        private TextView reviewRate;
     }
 
     public ReviewsAdapter(Context context , List<Review> reviewList){
@@ -58,6 +59,7 @@ public class ReviewsAdapter extends BaseAdapter {
             viewHolder.reviewContent = (TextView) convertView.findViewById(R.id.textView_Review_content);
             viewHolder.reviewerName = (TextView) convertView.findViewById(R.id.textView_Review_authorName);
             viewHolder.reviewerImage = (ImageView) convertView.findViewById(R.id.imageView_Review_AuthorImage);
+            viewHolder.reviewRate = (TextView) convertView.findViewById(R.id.textView_reviewRate);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -67,7 +69,7 @@ public class ReviewsAdapter extends BaseAdapter {
         viewHolder.reviewerName.setText(review.getReviewer());
         viewHolder.reviewContent.setText(review.getDeck());
         viewHolder.reviewerImage.setContentDescription(review.getSiteDetailUrl());
-
+        viewHolder.reviewRate.setText(review.getScore()+"/5");
         return convertView;
     }
 }

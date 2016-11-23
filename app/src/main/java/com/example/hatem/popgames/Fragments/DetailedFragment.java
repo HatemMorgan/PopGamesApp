@@ -294,7 +294,7 @@ public class DetailedFragment extends Fragment {
         List<Video> videoList = game.getVideos();
 
         // check if videos list of the game is empty to tell the user that their is no videos for this game
-        if (videoList.size()== 0 ){
+        if (videoList == null ||videoList.size()== 0  ){
             textView_noVideos.setText("Sorry , No Videos available");
         }
 

@@ -20,7 +20,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView_Review_moviePoster"
+                android:id="@+id/imageView_Review_gameImage"
                 android:src="@mipmap/ic_launcher"
                 android:layout_marginRight="30dp"
                 />
@@ -42,7 +42,7 @@
                         android:textSize="22dp"
                         android:text="Large Text"
                         android:textStyle="bold"
-                        android:id="@+id/textView_Review_movieTitle"
+                        android:id="@+id/textView_Review_gameName"
                         android:textColor="@color/White"
                         android:layout_marginBottom="10dp"
                         />
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView_review_movieYeat"
+                        android:id="@+id/textView_review_gameReleaseYear"
                         android:text="(2016)"
                         android:textStyle="bold"
                         android:layout_marginLeft="10dp"

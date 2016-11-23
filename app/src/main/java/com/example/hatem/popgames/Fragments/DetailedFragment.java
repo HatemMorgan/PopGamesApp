@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.hatem.popgames.Activities.DetailedActivity;
 import com.example.hatem.popgames.Activities.GallaryActivity;
+import com.example.hatem.popgames.Activities.ReviewsActivity;
 import com.example.hatem.popgames.Adapters.SimilarGamesAdapter;
 import com.example.hatem.popgames.Adapters.VideosAdapter;
 import com.example.hatem.popgames.ORM.DetailedGame;
@@ -64,6 +65,13 @@ public class DetailedFragment extends Fragment {
     private ArrayList<String> youtubeVideoList;
     private Context context;
 
+
+    // detailed game data global variables
+
+    private String gameName ;
+    private String gameReleaseYear;
+    private String gameImageURl;
+    private int gameID;
 
 
     public DetailedFragment() {
@@ -154,6 +162,26 @@ public class DetailedFragment extends Fragment {
             }
         });
 
+
+        // add onclick listener to Review button to navigate to the game's review page
+
+        btn_Reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("gameID",gameID);
+                bundle.putString("gameName",gameName);
+                bundle.putString("gameReleaseYear",gameReleaseYear);
+                bundle.putString("gameImageUrl",gameImageURl);
+
+                Intent intent = new Intent(getActivity(), ReviewsActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+                getActivity().finish();
+
+            }
+        });
+
         return rootView ;
 
 
@@ -165,8 +193,13 @@ public class DetailedFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Bundle bundle = getActivity().getIntent().getExtras();
         int game_id = bundle.getInt("game_id");
+
+        // setting gameID global variable to game_id passed by the bundle
+        gameID = game_id ;
+
 //        new Toast(context).makeText(context,game_id+"",Toast.LENGTH_LONG).show();
         getData(game_id+"");
+
 
         // todo : savaInstanceState here
 
@@ -244,10 +277,18 @@ public class DetailedFragment extends Fragment {
             Picasso.with(context).load(imageURl).into(gameImage);
         }
 
+        // setting game global variables
+        gameName = game.getName();
+        gameImageURl = game.getImage().getSmallUrl();
+        gameReleaseYear = year;
+
+        // getting similar games
         List<SimilarGame> gamesList = game.getSimilarGames();
         int [] count = {0};
         getSimilarGames(gamesList,count);
 
+
+        // getting videos of the game
         count = new int[1];
         count[0]= 0;
         List<Video> videoList = game.getVideos();

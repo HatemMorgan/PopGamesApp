@@ -35,10 +35,9 @@
     <string name="sort_by_top_rated_value">original_game_rating</string>
     <string name="sort_by_top_user_reviews_value">number_of_user_reviews</string>
 
-  // Detailed Activity
+    // Detailed Activity
 
     <string name="detailed_activity_name">Detailed Game</string>
-
 
 
 </resources>

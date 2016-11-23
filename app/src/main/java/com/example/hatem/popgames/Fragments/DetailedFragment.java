@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.hatem.popgames.Activities.DetailedActivity;
+import com.example.hatem.popgames.Activities.GallaryActivity;
 import com.example.hatem.popgames.Adapters.SimilarGamesAdapter;
 import com.example.hatem.popgames.Adapters.VideosAdapter;
 import com.example.hatem.popgames.ORM.DetailedGame;
@@ -137,6 +138,19 @@ public class DetailedFragment extends Fragment {
                 } catch (ActivityNotFoundException ex) {
                     startActivity(webIntent);
                 }
+            }
+        });
+
+
+        // add an onclick listener to Gallary button to navigate to gallary actitvity
+        btn_Gallary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gallaryIntent = new Intent(getActivity(), GallaryActivity.class);
+                Bundle bundle = getActivity().getIntent().getExtras();
+                gallaryIntent.putExtras(bundle);
+                startActivity(gallaryIntent);
+                getActivity().finish();
             }
         });
 

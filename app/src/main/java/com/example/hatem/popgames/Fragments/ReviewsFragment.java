@@ -15,15 +15,15 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.example.hatem.popgames.ORM.Review;
+import com.example.hatem.popgames.ORM.ReviewsAPIObject;
 import com.example.hatem.popgames.R;
 import com.example.hatem.popgames.Utilities.RequestQueueSingelton;
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -92,20 +92,13 @@ public class ReviewsFragment extends Fragment {
                         .appendQueryParameter(FILTER_PARAM,"game:"+gameID)
                         .build();
 
-        JsonObjectRequest getReviewsRequest = new JsonObjectRequest(Request.Method.GET, buildUri.toString(), null, new Response.Listener<JSONObject>() {
+        StringRequest getReviewsRequest = new StringRequest(Request.Method.GET, buildUri.toString(), new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray result = response.getJSONArray("results");
+            public void onResponse(String response) {
 
-                    for(int i =0 ;i<result.length();i++) {
-                        JSONObject singleReview = result.getJSONObject(i);
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Gson gson  = new Gson();
+                ReviewsAPIObject  reviewsAPiResponseObject = gson.fromJson(response,ReviewsAPIObject.class);
+                List<Review> reviewsList = reviewsAPiResponseObject.getResults();
 
             }
         }, new Response.ErrorListener() {
@@ -115,7 +108,8 @@ public class ReviewsFragment extends Fragment {
             }
         });
 
-        RequestQueueSingelton.getmInstance(this).addToRequestQueue(getReviewsRequest);
+
+        RequestQueueSingelton.getmInstance(getActivity()).addToRequestQueue(getReviewsRequest);
 
     }
 

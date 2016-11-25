@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
 
         // initializing viewPager and pagerAdapter
         viewPager = (ViewPager) findViewById(R.id.pager);
-        viewPager.setOffscreenPageLimit(3);
         setupViewPager(viewPager);
 
         // initializing tabLayout

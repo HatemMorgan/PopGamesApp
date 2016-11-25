@@ -40,6 +40,10 @@ public class RequestQueueSingelton {
         return  mRequestQueue ;
     }
 
+    public void EmptyQueue(){
+       getmRequestQueue().cancelAll("TAG");
+    }
+
 
 
     public <T> void addToRequestQueue(Request<T> newRequest){

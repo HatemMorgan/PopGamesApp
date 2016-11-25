@@ -103,7 +103,7 @@ public class ReviewsFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         context = getContext();
         Bundle bundle = getActivity().getIntent().getExtras();
-        int gameID = bundle.getInt("gameID");
+        int gameID = bundle.getInt("game_id");
         getReviewFromApi(gameID);
     }
 

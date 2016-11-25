@@ -1,6 +1,6 @@
 package com.example.hatem.popgames.Activities;
 
-import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +28,9 @@ import java.util.ArrayList;
 public class GallaryActivity extends AppCompatActivity {
     private  Gallery gallaryView ;
     private ImageView imageViewGallary ;
-    private Context context ;
+    private AppCompatActivity context ;
     private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +121,11 @@ public class GallaryActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = context.getIntent().getExtras();
+                Intent intent = new Intent(v.getContext(),DetailedActivity.class);
+                intent.putExtras(bundle);
+                RequestQueueSingelton.getmInstance(context.getApplicationContext()).EmptyQueue();
+                startActivity(intent);
                 finish();
             }
         });

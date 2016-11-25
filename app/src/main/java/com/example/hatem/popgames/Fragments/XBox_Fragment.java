@@ -83,12 +83,17 @@ public class XBox_Fragment extends Fragment {
                 if(gamesList != null){
 
                     int gameID = gamesList.get(position).getId();
+                    ArrayList<Integer> prev = new ArrayList<Integer>();
+                    prev.add(gameID);
                     bundle.putInt("game_id",gameID);
+//                    bundle.putBoolean("FromMainActivity",true);
+                    bundle.putInt("counter",1);
+                    bundle.putIntegerArrayList("prevs",prev);
                     Intent intent = new Intent(getActivity(), DetailedActivity.class);
                     intent.putExtras(bundle);
                     getActivity().startActivity(intent);
-                    getActivity().finish();
 
+                    getActivity().finish();
                 }
 
 
@@ -108,8 +113,9 @@ public class XBox_Fragment extends Fragment {
             updateGames();
         }else{
             if(savedInstanceState.getSerializable("XBOX_Games") != null) {
+                loadingSpinnerView.setVisibility(View.GONE);
+                pcGamesGridView.setVisibility(View.VISIBLE);
                 gamesList = (ArrayList<Games>) savedInstanceState.getSerializable("XBOX_Games");
-
                 GamesAdapter GamesAdapter = new GamesAdapter(context, gamesList);
                 pcGamesGridView.setAdapter(GamesAdapter);
             }

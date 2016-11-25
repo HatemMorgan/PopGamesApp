@@ -81,10 +81,16 @@ public class PC_Fragment extends Fragment {
                 if(gamesList != null){
 
                     int gameID = gamesList.get(position).getId();
+                   ArrayList<Integer> prev = new ArrayList<Integer>();
+                    prev.add(gameID);
                     bundle.putInt("game_id",gameID);
+//                    bundle.putBoolean("FromMainActivity",true);
+                    bundle.putInt("counter",1);
+                    bundle.putIntegerArrayList("prevs",prev);
                     Intent intent = new Intent(getActivity(), DetailedActivity.class);
                     intent.putExtras(bundle);
                     getActivity().startActivity(intent);
+
                     getActivity().finish();
                 }
 
@@ -99,12 +105,14 @@ public class PC_Fragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated( Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState == null) {
             updateGames();
         }else{
             if(savedInstanceState.getSerializable("PC_Games") != null) {
+                loadingSpinnerView.setVisibility(View.GONE);
+                pcGamesGridView.setVisibility(View.VISIBLE);
                 gamesList = (ArrayList<Games>) savedInstanceState.getSerializable("PC_Games");
 
                 GamesAdapter GamesAdapter = new GamesAdapter(context, gamesList);

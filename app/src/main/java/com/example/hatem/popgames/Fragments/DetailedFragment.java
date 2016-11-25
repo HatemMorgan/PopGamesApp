@@ -114,11 +114,23 @@ public class DetailedFragment extends Fragment {
 
                 // creating a bundle and add to it the gameID
                 Bundle bundle = new Bundle();
+
+
+                // getting data from bundle passed from calling activity
+                Bundle passedBundle = getActivity().getIntent().getExtras();
+                ArrayList<Integer> prev = passedBundle.getIntegerArrayList("prevs");
+                if(passedBundle.getInt("counter") != 1) {
+                    prev.add(passedBundle.getInt("game_id"));
+
+                }
+                bundle.putIntegerArrayList("prevs",prev);
+                bundle.putInt("counter",passedBundle.getInt("counter")+1);
                 bundle.putInt("game_id",Integer.parseInt(gameID));
                 // creating an implicit intent and add to it the created bundle
                 Intent intent = new Intent(getActivity(), DetailedActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                RequestQueueSingelton.getmInstance(context.getApplicationContext()).EmptyQueue();
                 getActivity().finish();
             }
         });
@@ -142,6 +154,7 @@ public class DetailedFragment extends Fragment {
                     // if there are no apps in the user's device that can play the youtube video an ActivityNotFoundException will be thrown
                     // if ActivityNotFoundException was thrown , I will catch it and sent the web intent that plays the video in any on of the browsers
                     // available on the device
+                    RequestQueueSingelton.getmInstance(context.getApplicationContext()).EmptyQueue();
                     startActivity(appIntent);
                 } catch (ActivityNotFoundException ex) {
                     startActivity(webIntent);
@@ -154,10 +167,19 @@ public class DetailedFragment extends Fragment {
         btn_Gallary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("game_id",gameID);
+                bundle.putString("gameName",gameName);
+                bundle.putString("gameReleaseYear",gameReleaseYear);
+                bundle.putString("gameImageUrl",gameImageURl);
+                Bundle passedBundle = getActivity().getIntent().getExtras();
+                bundle.putIntegerArrayList("prevs",passedBundle.getIntegerArrayList("prevs"));
+                bundle.putInt("counter",passedBundle.getInt("counter"));
+
                 Intent gallaryIntent = new Intent(getActivity(), GallaryActivity.class);
-                Bundle bundle = getActivity().getIntent().getExtras();
                 gallaryIntent.putExtras(bundle);
                 startActivity(gallaryIntent);
+                RequestQueueSingelton.getmInstance(context.getApplicationContext()).EmptyQueue();
                 getActivity().finish();
             }
         });
@@ -169,14 +191,19 @@ public class DetailedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("gameID",gameID);
+                bundle.putInt("game_id",gameID);
                 bundle.putString("gameName",gameName);
                 bundle.putString("gameReleaseYear",gameReleaseYear);
                 bundle.putString("gameImageUrl",gameImageURl);
+                Bundle passedBundle = getActivity().getIntent().getExtras();
+                bundle.putIntegerArrayList("prevs",passedBundle.getIntegerArrayList("prevs"));
+                bundle.putInt("counter",passedBundle.getInt("counter"));
+
 
                 Intent intent = new Intent(getActivity(), ReviewsActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+                RequestQueueSingelton.getmInstance(context.getApplicationContext()).EmptyQueue();
                 getActivity().finish();
 
             }
@@ -186,6 +213,7 @@ public class DetailedFragment extends Fragment {
 
 
     }
+
 
 
     @Override
@@ -200,8 +228,6 @@ public class DetailedFragment extends Fragment {
 //        new Toast(context).makeText(context,game_id+"",Toast.LENGTH_LONG).show();
         getData(game_id+"");
 
-
-        // todo : savaInstanceState here
 
 
     }

@@ -10,17 +10,19 @@ import android.view.View;
 
 import com.example.hatem.popgames.Fragments.ReviewsFragment;
 import com.example.hatem.popgames.R;
+import com.example.hatem.popgames.Utilities.RequestQueueSingelton;
 
 public class ReviewsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ReviewsFragment reviewsFragment ;
+    private AppCompatActivity context ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reviews);
-
+        context = this;
         initToolBar();
 
         reviewsFragment = new ReviewsFragment() ;
@@ -63,8 +65,14 @@ public class ReviewsActivity extends AppCompatActivity {
 
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                Bundle bundle = context.getIntent().getExtras();
+                Intent intent = new Intent(v.getContext(),DetailedActivity.class);
+                intent.putExtras(bundle);
+                RequestQueueSingelton.getmInstance(context.getApplicationContext()).EmptyQueue();
+                startActivity(intent);
                 finish();
             }
         });

@@ -23,7 +23,9 @@
             android:parentActivityName=".Activities.MainActivity" />
         <activity
             android:name=".Activities.DetailedActivity"
-            android:parentActivityName=".Activities.MainActivity" />
+            />
+
+
         <activity android:name=".Activities.GallaryActivity" />
         <activity android:name=".Activities.ReviewsActivity"></activity>
     </application>

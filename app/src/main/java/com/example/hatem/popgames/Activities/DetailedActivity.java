@@ -15,13 +15,13 @@ public class DetailedActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private DetailedFragment detailed_fragment;
-
+    private AppCompatActivity context ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
         initToolBar();
-
+        context = this;
         detailed_fragment = new DetailedFragment() ;
 
         getSupportFragmentManager().beginTransaction().replace(R.id.DetialedGame_container,detailed_fragment).commit();
@@ -63,9 +63,12 @@ public class DetailedActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(),MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

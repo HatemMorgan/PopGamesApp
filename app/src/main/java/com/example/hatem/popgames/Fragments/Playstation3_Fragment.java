@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -15,19 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.example.hatem.popgames.Activities.DetailedActivity;
 import com.example.hatem.popgames.Adapters.GamesAdapter;
 import com.example.hatem.popgames.ORM.Games;
 import com.example.hatem.popgames.ORM.GamesCollection;
 import com.example.hatem.popgames.R;
-import com.example.hatem.popgames.Utilities.RequestQueueSingelton;
 import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +42,8 @@ public class Playstation3_Fragment extends Fragment {
     private Context context;
     private GridView pcGamesGridView;
     private SharedPreferences sharedPreferences ;
+    private ProgressBar loadingSpinnerView ;
+    private  GamesAdapter GamesAdapter;
 
     public Playstation3_Fragment() {
         // Required empty public constructor
@@ -61,7 +66,11 @@ public class Playstation3_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_playstation3_, container, false);
 
+        loadingSpinnerView = (ProgressBar) rootView.findViewById(R.id.progressBar_PS3);
         pcGamesGridView = (GridView) rootView.findViewById(R.id.gridview_PS3_Games);
+
+        pcGamesGridView.setVisibility(View.GONE);
+        loadingSpinnerView.setVisibility(View.VISIBLE);
 
         pcGamesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,68 +97,126 @@ public class Playstation3_Fragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState == null) {
             updateGames();
+        }else{
+            if(savedInstanceState.getSerializable("PS3_Games") != null) {
+                gamesList = (ArrayList<Games>) savedInstanceState.getSerializable("PS3_Games");
+
+                GamesAdapter GamesAdapter = new GamesAdapter(context, gamesList);
+                pcGamesGridView.setAdapter(GamesAdapter);
+            }
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putParcelableArrayList("gamesList", gamesList);
+        outState.putSerializable("PS3_Games",gamesList);
     }
 
 
     public void updateGames() {
-        final String APPID_PARAM = "api_key";
-        final String FORMAT_PARAM = "format";
-        final String FIELD_LIST_PARAM = "field_list";
-        final String LIMIT_PARAM = "limit";
-        final String FILTER_PARAM = "filter";
-        final String SORT_PARAM =  "sort";
-        String getGamesUrl = "http://www.giantbomb.com/api/games/";
 
-        String  sortCriteria = sharedPreferences.getString(getString(R.string.pref_sort_list_key), getString(R.string.sort_by_release_date));
+        GetPS3GamesTask getPS3GamesTask = new GetPS3GamesTask();
+        getPS3GamesTask.execute();
 
 
-        Uri buildUri = Uri.parse(getGamesUrl)
-                .buildUpon()
-                .appendQueryParameter(APPID_PARAM, getString(R.string.api_key))
-                .appendQueryParameter(FORMAT_PARAM, getString(R.string.response_format))
-                .appendQueryParameter(FIELD_LIST_PARAM, "id,name,image")
-                .appendQueryParameter(LIMIT_PARAM, getString(R.string.response_limit))
-                .appendQueryParameter(FILTER_PARAM, getString(R.string.response_filter_PS3))
-                .appendQueryParameter(SORT_PARAM,sortCriteria+":desc")
-                .build();
 
-        StringRequest getPS3GamesRequest = new StringRequest(Request.Method.GET, buildUri.toString(),
+    }
 
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
+    private class GetPS3GamesTask extends AsyncTask<URL, Integer, ArrayList<Games>> {
 
-                        Gson gson = new Gson();
-                        GamesCollection gamesCollection = gson.fromJson(response, GamesCollection.class);
-                        gamesList = gamesCollection.getGamesResults();
+        protected void onProgressUpdate(Integer... progress) {
 
-                        GamesAdapter ps3GamesAdapter = new GamesAdapter(context, gamesList);
-                        pcGamesGridView.setAdapter(ps3GamesAdapter);
+        }
 
-//                        RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).getmRequestQueue().cancelAll("TAG");
-                    }
-                },
+        protected void onPostExecute(ArrayList<Games> result) {
+            loadingSpinnerView.setVisibility(View.GONE);
+            pcGamesGridView.setVisibility(View.VISIBLE);
+            if (result != null) {
+                GamesAdapter = new GamesAdapter(context, result);
+                pcGamesGridView.setAdapter(GamesAdapter);
+            }
+        }
 
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("error",error.toString());
+
+        protected ArrayList<Games> doInBackground(URL... urls) {
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            String PCGamesJsonString = null;
+            try {
+                final String APPID_PARAM = "api_key";
+                final String FORMAT_PARAM = "format";
+                final String FIELD_LIST_PARAM = "field_list";
+                final String LIMIT_PARAM = "limit";
+                final String FILTER_PARAM = "filter";
+                final String SORT_PARAM =  "sort";
+                String getGamesUrl = "http://www.giantbomb.com/api/games/";
+
+                String  sortCriteria = sharedPreferences.getString(getString(R.string.pref_sort_list_key), getString(R.string.sort_by_release_date));
+
+
+                Uri buildUri = Uri.parse(getGamesUrl)
+                        .buildUpon()
+                        .appendQueryParameter(APPID_PARAM, getString(R.string.api_key))
+                        .appendQueryParameter(FORMAT_PARAM, getString(R.string.response_format))
+                        .appendQueryParameter(FIELD_LIST_PARAM, "id,name,image")
+                        .appendQueryParameter(LIMIT_PARAM, getString(R.string.response_limit))
+                        .appendQueryParameter(FILTER_PARAM, getString(R.string.response_filter_PS3))
+                        .appendQueryParameter(SORT_PARAM,sortCriteria+":desc")
+                        .build();
+
+                URL url = new URL(buildUri.toString());
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuffer buffer = new StringBuffer();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                PCGamesJsonString = buffer.toString();
+
+                Gson gson = new Gson();
+                GamesCollection gamesCollection = gson.fromJson(PCGamesJsonString, GamesCollection.class);
+                gamesList = gamesCollection.getGamesResults();
+
+
+            } catch (IOException e) {
+                // If the code didn't successfully get the weather data, there's no point in attemping
+                // to parse it.
+                return null;
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("Error", "Error closing stream", e);
                     }
                 }
-        );
+                return  gamesList;
+            }
 
-                RequestQueueSingelton.getmInstance(getActivity().getApplicationContext()).addToRequestQueue(getPS3GamesRequest);
-
-
+        }
 
     }
 

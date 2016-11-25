@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.hatem.popgames.Fragments.Playstation4_Fragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar_PS4"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+
+        />
+
     <GridView
         android:id="@+id/gridview_PS4_Games"
         android:layout_width="match_parent"
@@ -14,7 +23,7 @@
         android:stretchMode="columnWidth"
         android:numColumns="2"
         android:choiceMode="singleChoice"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="60dp"
         />
 
 </FrameLayout>

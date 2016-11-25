@@ -10,7 +10,7 @@
     <string name="XBox_tab_name">XBox</string>
     <string name="api_key">0df72ab53c1e4b677d9e89aaccc0aeddb5ee071a</string>
     <string name="response_format">json</string>
-    <string name="response_limit">10</string>
+    <string name="response_limit">20</string>
 
     <string name="response_sort_number_of_user_reviews">number_of_user_reviews:desc</string>
     <string name="response_sort_original_game_rating">original_game_rating:desc</string>
